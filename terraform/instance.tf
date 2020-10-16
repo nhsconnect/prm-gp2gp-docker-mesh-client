@@ -59,12 +59,13 @@ resource "aws_iam_role_policy_attachment" "mesh_client_session_manager" {
 
 
 resource "aws_instance" "mesh_client" {
-  ami                    = data.aws_ami.amazon_linux_2.image_id
-  instance_type          = "t3a.small"
-  vpc_security_group_ids = [aws_security_group.mesh_client.id]
-  subnet_id              = aws_subnet.public.id
-  iam_instance_profile   = aws_iam_instance_profile.mesh_client.name
+  ami                         = data.aws_ami.amazon_linux_2.image_id
+  instance_type               = "t3a.small"
+  vpc_security_group_ids      = [aws_security_group.mesh_client.id]
+  subnet_id                   = aws_subnet.public.id
+  iam_instance_profile        = aws_iam_instance_profile.mesh_client.name
   associate_public_ip_address = true
+  user_data                   = file("${path.module}/user-data.sh")
 
   tags = merge(
     local.common_tags,

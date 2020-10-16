@@ -6,4 +6,4 @@ ENV MESH_DATA_HOME=/mesh-data
 COPY . .
 
 RUN apt-get update && apt-get install -y gettext-base unrar-free
-RUN ./install-mesh-client-script.sh
+RUN ./install-mesh-client.sh
