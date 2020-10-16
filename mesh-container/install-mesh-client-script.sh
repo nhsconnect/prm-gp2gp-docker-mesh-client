@@ -7,11 +7,11 @@ curl ${INSTALLER_URL} --output mesh-installer.rar
 
 unrar mesh-installer.rar
 
-java -jar mesh-6.2.0_20180601-installer-signed.jar << 'EOF'
+java -jar mesh-6.2.0_20180601-installer-signed.jar << EOF
 1
-/mesh-app
+${MESH_APP_HOME}
 1
-/mesh-data
+${MESH_DATA_HOME}
 O
 1
 gp2gp-test
