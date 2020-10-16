@@ -9,9 +9,9 @@ unrar mesh-installer.rar
 
 java -jar mesh-6.2.0_20180601-installer-signed.jar << 'EOF'
 1
-/usr/local/MESH-APP-HOME
+/mesh-app
 1
-/root/MESH-DATA-HOME
+/mesh-data
 O
 1
 gp2gp-test
