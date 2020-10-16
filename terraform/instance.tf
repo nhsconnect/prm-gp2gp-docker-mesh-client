@@ -53,7 +53,8 @@ resource "aws_iam_instance_profile" "mesh_client" {
 
 resource "aws_iam_role_policy_attachment" "mesh_client_session_manager" {
   role       = aws_iam_role.mesh_client.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonSSMManagedInstanceCore"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+
 }
 
 
