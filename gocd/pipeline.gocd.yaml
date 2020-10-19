@@ -10,7 +10,7 @@ pipelines:
       - build:
           clean_workspace: true
           jobs:
-            test:
+            build:
               resources:
                 - docker
               tasks:
