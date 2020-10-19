@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -Eeo pipefail
+
+task="$1"
+
+aws_region=eu-west-2
+image_repo_name=gp2gp/mi-data-collector
+
+function docker_login {
+  dojo "aws ecr get-login --no-include-email --region $aws_region"
+}
+
+function get_aws_account_id {
+  dojo "aws sts get-caller-identity --query Account --output text"
+}
+
+function get_latest_commit_hash {
+  git rev-parse HEAD | cut -c 1-7
+}
+
+echo "--- ${task} ---"
+case "${task}" in
+    build-docker)
+        aws_account_id=$(get_aws_account_id)
+        repository_uri=${aws_account_id}.dkr.ecr.${aws_region}.amazonaws.com/${image_repo_name}
+        commit_hash=$(get_latest_commit_hash)
+        image_tag=${commit_hash}
+        docker build -t ${repository_uri}:latest -t ${repository_uri}:${image_tag} mesh-container
+        eval $(docker_login)
+        docker push ${repository_uri}
+    ;;
+    *)
+        echo "Invalid task: '${task}'"
+        exit 1
+    ;;
+esac
+
+set +e
