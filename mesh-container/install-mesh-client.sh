@@ -14,7 +14,7 @@ ${MESH_APP_HOME}
 ${MESH_DATA_HOME}
 O
 1
-gp2gp-test
+${MESH_MAILBOX_NAME}
 0
 1
 1
@@ -23,3 +23,4 @@ N
 EOF
 
 rm mesh-installer.rar
+rm mesh-*-installer-signed.jar
