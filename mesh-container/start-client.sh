@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 java -jar mesh-6.2.0_20180601-installer-signed.jar << EOF
 1
 ${MESH_APP_HOME}
@@ -15,7 +17,8 @@ ${MESH_MAILBOX_NAME}
 N
 EOF
 
-envsubst < ${MESH_SCRIPTS_HOME}/config-template.cfg > $MESH_APP_HOME/meshclient.cfg
+envsubst < ${MESH_SCRIPTS_HOME}/config-template.cfg > ${MESH_APP_HOME}/meshclient.cfg
+cp ${MESH_SCRIPTS_HOME}/log4j.xml ${MESH_APP_HOME}/log4j.xml
 
 cd $MESH_APP_HOME
 java -jar -Dlog4j.configuration=file:./log4j.xml meshClient.jar ./meshclient.cfg
