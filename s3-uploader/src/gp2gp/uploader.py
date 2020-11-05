@@ -1,11 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-import boto3
 
-
-class MIToS3Uploader:
-
+class MeshToS3Uploader:
     def __init__(self, mesh_inbox_scanner, file_registry, file_uploader):
         self._mesh_inbox_scanner = mesh_inbox_scanner
         self._file_registry = file_registry

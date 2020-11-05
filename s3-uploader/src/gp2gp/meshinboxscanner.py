@@ -1,8 +1,9 @@
 import glob
-from gp2gpmi.miuploader import MeshFile
+from gp2gp.uploader import MeshFile
 from pathlib import Path
-import xml.etree.ElementTree as ET
-import datetime
+from defusedxml.ElementTree import parse
+from datetime import datetime
+
 
 class MeshInboxScanner:
     def __init__(self):
@@ -29,10 +30,9 @@ class MeshInboxScanner:
         return f"{self.directory}/{file_name}.ctrl"
 
     def _parse_value_from_xml(self, xml_path):
-        root = ET.parse(xml_path).getroot()
+        root = parse(xml_path).getroot()
         raw_date = root.find("StatusRecord").find("DateTime").text
         return raw_date
 
     def _parse_date_from_string(self, date_string):
-        return datetime.datetime.strptime(date_string, "%Y%m%d%H%M%S")
-
+        return datetime.strptime(date_string, "%Y%m%d%H%M%S")
