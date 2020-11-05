@@ -1,11 +1,12 @@
 from datetime import datetime
+from pathlib import Path
 
 from gp2gp.mesh import MeshInboxScanner, MeshFile
 
 
 def test_finds_file_in_directory(fs):
-    dat_file_path = "/IN/20201025030139_abc.dat"
-    ctrl_file_path = "/IN/20201025030139_abc.ctrl"
+    dat_file_path = Path("/IN/20201025030139_abc.dat")
+    ctrl_file_path = Path("/IN/20201025030139_abc.ctrl")
     fs.create_dir("/IN")
     fs.create_file(dat_file_path, contents="I, am, data")
     fs.create_file(

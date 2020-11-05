@@ -12,7 +12,7 @@ class MeshInboxScanner:
 
         for file_path in file_paths:
             date = self._get_date(file_path)
-            yield MeshFile(path=str(file_path), date_delivered=date)
+            yield MeshFile(path=file_path, date_delivered=date)
 
     def _get_date(self, dat_path):
         ctrl_path = self._find_ctrl_from_dat(dat_path)
@@ -35,5 +35,5 @@ class MeshInboxScanner:
 
 @dataclass(frozen=True)
 class MeshFile:
-    path: str
+    path: Path
     date_delivered: datetime
