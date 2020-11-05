@@ -1,7 +1,6 @@
 from datetime import datetime
 
-from gp2gp.meshinboxscanner import MeshInboxScanner
-from gp2gp.uploader import MeshFile
+from gp2gp.mesh import MeshInboxScanner, MeshFile
 
 
 def test_finds_file_in_directory(fs):
@@ -26,6 +25,6 @@ def test_finds_file_in_directory(fs):
 
     scanner = MeshInboxScanner()
 
-    result = scanner.scan("/IN")
+    result = list(scanner.scan("/IN"))
 
     assert result == expected

@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from gp2gp.uploader import MeshToS3Uploader, MeshFile
+from gp2gp.uploader import MeshToS3Uploader
+from gp2gp.mesh import MeshFile
 from unittest.mock import MagicMock, call
 
 A_DATE = datetime(2020, 10, 25)
