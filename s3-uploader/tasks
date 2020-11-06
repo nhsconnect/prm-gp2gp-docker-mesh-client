@@ -9,6 +9,9 @@ do
     test)
         tox -e py38
         ;;
+    e2e-test)
+        tox -e e2e
+        ;;
     format)
         tox -e format
         ;;
