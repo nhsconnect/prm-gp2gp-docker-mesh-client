@@ -35,3 +35,19 @@ def test_is_already_processed_returns_true_given_a_processed_file():
     actual = file_registry.is_already_processed(mesh_file, bucket_name)
 
     assert actual == expected
+
+
+def test_is_already_processed_distinguishes_between_buckets():
+    mesh_file = MeshFile(A_PATH, A_DATE)
+
+    sqlite_conn = sqlite3.connect(":memory:")
+    file_registry = ProcessedFileRegistry(sqlite_conn)
+    bucket_name = "a-bucket"
+    second_bucket_name = "a-bucket-v2"
+
+    expected = False
+
+    file_registry.mark_processed(mesh_file, bucket_name)
+    actual = file_registry.is_already_processed(mesh_file, second_bucket_name)
+
+    assert actual == expected
