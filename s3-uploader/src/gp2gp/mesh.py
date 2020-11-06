@@ -15,14 +15,14 @@ class MeshInboxScanner:
             yield MeshFile(path=file_path, date_delivered=date)
 
     def _get_date(self, dat_path):
-        ctrl_path = self._find_ctrl_from_dat(dat_path)
-        date_string = self._parse_value_from_xml(ctrl_path)
+        ctl_path = self._find_ctl_from_dat(dat_path)
+        date_string = self._parse_value_from_xml(ctl_path)
         parsed_date = self._parse_date_from_string(date_string)
         return parsed_date
 
-    def _find_ctrl_from_dat(self, dat_path):
+    def _find_ctl_from_dat(self, dat_path):
         file_name = dat_path.stem
-        return dat_path.parent / f"{file_name}.ctrl"
+        return dat_path.parent / f"{file_name}.ctl"
 
     def _parse_value_from_xml(self, xml_path):
         root = parse(xml_path).getroot()

@@ -6,11 +6,11 @@ from gp2gp.mesh import MeshInboxScanner, MeshFile
 
 def test_finds_file_in_directory(fs):
     dat_file_path = Path("/IN/20201025030139_abc.dat")
-    ctrl_file_path = Path("/IN/20201025030139_abc.ctrl")
+    ctl_file_path = Path("/IN/20201025030139_abc.ctl")
     fs.create_dir("/IN")
     fs.create_file(dat_file_path, contents="I, am, data")
     fs.create_file(
-        ctrl_file_path,
+        ctl_file_path,
         contents=(
             "<DTSControl>"
             "<StatusRecord>"
