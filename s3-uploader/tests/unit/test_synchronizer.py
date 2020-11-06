@@ -13,7 +13,7 @@ def test_uploads_file():
     mock_file_registry = MagicMock()
     mock_file_uploader = MagicMock()
 
-    mock_mesh_file = MeshFile(path="path/to/file.dat", date_delivered=A_DATE)
+    mock_mesh_file = MeshFile(Path("path/to/file.dat"), date_delivered=A_DATE)
 
     mock_mesh_inbox_scanner.scan.return_value = [mock_mesh_file]
     mock_file_registry.is_already_processed.return_value = False
@@ -51,18 +51,18 @@ class MockFileRegistry:
     def __init__(self):
         self.registry = set()
 
-    def mark_processed(self, file, bucket):
-        self.registry.add((file, bucket))
+    def mark_processed(self, filename):
+        self.registry.add(filename)
 
-    def is_already_processed(self, file, bucket):
-        return (file, bucket) in self.registry
+    def is_already_processed(self, filename):
+        return filename in self.registry
 
 
 def mock_registry(already_processed):
     mock_file_registry = MockFileRegistry()
 
-    for file, bucket in already_processed:
-        mock_file_registry.mark_processed(file, bucket)
+    for filename in already_processed:
+        mock_file_registry.mark_processed(filename)
 
     return mock_file_registry
 
@@ -73,7 +73,7 @@ def test_only_uploads_new_files():
     mock_old_file = MeshFile(path=Path("path/to/oldfile.dat"), date_delivered=A_DATE)
 
     mock_mesh_inbox_scanner = MagicMock()
-    mock_file_registry = mock_registry(already_processed={(mock_old_file, "fake-bucket")})
+    mock_file_registry = mock_registry(already_processed=[mock_old_file])
     mock_file_uploader = MagicMock()
 
     mock_mesh_inbox_scanner.scan.return_value = [mock_new_file, mock_old_file]

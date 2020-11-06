@@ -56,11 +56,11 @@ def _write_test_files(test_files):
         )
 
 
-def _write_prior_sqlite_state(state_file, bucket, already_processed):
+def _write_prior_sqlite_state(state_file, already_processed):
     sqlite_conn = sqlite3.connect(state_file)
     file_registry = ProcessedFileRegistry(sqlite_conn)
     for mesh_file in already_processed:
-        file_registry.mark_processed(mesh_file, bucket)
+        file_registry.mark_processed(mesh_file)
 
 
 def _build_s3_bucket(bucket_name):
@@ -110,7 +110,7 @@ def test_mesh_s3_synchronizer(tmpdir):
 
     _write_test_files(test_files=[mesh_file_one, mesh_file_two, mesh_file_three])
 
-    _write_prior_sqlite_state(state_file, bucket=bucket_name, already_processed=[mesh_file_one])
+    _write_prior_sqlite_state(state_file, already_processed=[mesh_file_one])
 
     try:
         pipeline_process = _run_synchronizer(mesh_inbox, bucket_name, state_file)

@@ -14,5 +14,5 @@ def test_upload():
     uploader.upload(a_file)
 
     mock_s3.upload_file.assert_called_once_with(
-        Path("test/file.dat"), "test_bucket", "2020/03/04/file.dat"
+        "test/file.dat", "test_bucket", "2020/03/04/file.dat"
     )

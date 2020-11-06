@@ -20,9 +20,9 @@ class MeshToS3Synchronizer:
         mesh_files = self._mesh_inbox_scanner.scan(directory_path)
 
         for file in mesh_files:
-            if not self._file_registry.is_already_processed(file, s3_bucket):
+            if not self._file_registry.is_already_processed(file):
                 self._file_uploader.upload(file)
-                self._file_registry.mark_processed(file, s3_bucket)
+                self._file_registry.mark_processed(file)
 
 
 def parse_arguments(argument_list):
