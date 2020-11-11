@@ -4,5 +4,6 @@ class MeshS3Uploader:
         self._bucket_name = bucket_name
 
     def upload(self, mesh_file):
-        key = f"{mesh_file.date_delivered.strftime('%Y/%m/%d')}/{mesh_file.path.name}"
+        date_delivered = mesh_file.read_delivery_date()
+        key = f"{date_delivered.strftime('%Y/%m/%d')}/{mesh_file.path.name}"
         self._s3.upload_file(str(mesh_file.path), self._bucket_name, key)

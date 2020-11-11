@@ -3,16 +3,23 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from gp2gp.uploader import MeshS3Uploader
-from gp2gp.mesh.file import MeshFile
+
+
+def build_mock_file(file_path, date_delivered):
+    mock_file = MagicMock()
+    mock_file.path = Path(file_path)
+    mock_file.read_delivery_date = lambda: date_delivered
+    return mock_file
 
 
 def test_upload():
     mock_s3 = MagicMock()
-    uploader = MeshS3Uploader(mock_s3, "test_bucket")
-    a_file = MeshFile(Path("test/file.dat"), datetime(2020, 3, 4, 8, 33))
+    bucket_name = "test_bucket"
+    file_path = "test/file.dat"
 
+    uploader = MeshS3Uploader(mock_s3, bucket_name)
+
+    a_file = build_mock_file(file_path, datetime(2020, 3, 4))
     uploader.upload(a_file)
 
-    mock_s3.upload_file.assert_called_once_with(
-        "test/file.dat", "test_bucket", "2020/03/04/file.dat"
-    )
+    mock_s3.upload_file.assert_called_once_with(file_path, bucket_name, "2020/03/04/file.dat")

@@ -39,10 +39,10 @@ def _start_minio(data_dir):
 
 
 def _write_test_files(test_files):
-    for mesh_file in test_files:
+    for (mesh_file, delivery_date) in test_files:
         ctl_path = mesh_file.path.parent / f"{mesh_file.path.stem}.ctl"
         mesh_file.path.write_text("some-data")
-        timestamp = mesh_file.date_delivered.strftime("%Y%m%d%H%M%S")
+        timestamp = delivery_date.strftime("%Y%m%d%H%M%S")
         ctl_path.write_text(
             (
                 "<DTSControl>"
@@ -103,12 +103,18 @@ def test_mesh_s3_synchronizer(tmpdir):
     s3_bucket = _build_s3_bucket(bucket_name)
     s3_bucket.create()
 
-    mesh_file_one = MeshFile(mesh_inbox / "file_one.dat", datetime(2020, 2, 3, 10, 6, 2))
-    mesh_file_two = MeshFile(mesh_inbox / "file_two.dat", datetime(2020, 2, 3, 11, 52, 18))
-    mesh_file_three = MeshFile(mesh_inbox / "file_three.dat", datetime(2020, 2, 4, 7, 20, 9))
-    mesh_file_four = MeshFile(mesh_inbox / "file_four.dat", datetime(2020, 4, 5, 2, 23, 56))
+    mesh_file_one = MeshFile(mesh_inbox / "file_one.dat")
+    mesh_file_two = MeshFile(mesh_inbox / "file_two.dat")
+    mesh_file_three = MeshFile(mesh_inbox / "file_three.dat")
+    mesh_file_four = MeshFile(mesh_inbox / "file_four.dat")
 
-    _write_test_files(test_files=[mesh_file_one, mesh_file_two, mesh_file_three])
+    _write_test_files(
+        test_files=[
+            (mesh_file_one, datetime(2020, 2, 3, 10, 6, 2)),
+            (mesh_file_two, datetime(2020, 2, 3, 11, 52, 18)),
+            (mesh_file_three, datetime(2020, 2, 4, 7, 20, 9)),
+        ]
+    )
 
     _write_prior_sqlite_state(state_file, already_processed=[mesh_file_one])
 
@@ -119,7 +125,7 @@ def test_mesh_s3_synchronizer(tmpdir):
         actual_object_keys_a = {obj.key for obj in s3_bucket.objects.all()}
         assert actual_object_keys_a == expected_object_keys_a
 
-        _write_test_files([mesh_file_four])
+        _write_test_files([(mesh_file_four, datetime(2020, 4, 5, 2, 23, 56))])
         pipeline_process = _run_synchronizer(mesh_inbox, bucket_name, state_file)
         pipeline_process.wait(timeout=10)
         expected_object_keys_b = {

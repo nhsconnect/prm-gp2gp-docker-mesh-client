@@ -22,7 +22,7 @@ def test_reads_delivery_date(fs):
         ),
     )
 
-    mesh_file = MeshFile(path=dat_file_path, date_delivered=None)
+    mesh_file = MeshFile(path=dat_file_path)
 
     result = mesh_file.read_delivery_date()
     expected_date = datetime(2020, 10, 25, 3, 1, 39)

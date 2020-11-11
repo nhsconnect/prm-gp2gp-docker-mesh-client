@@ -3,15 +3,14 @@ from datetime import datetime
 
 
 class MeshFile:
-    def __init__(self, path, date_delivered):
+    def __init__(self, path):
         self.path = path
-        self.date_delivered = date_delivered
 
     def __eq__(self, other):
         if not isinstance(other, MeshFile):
             return NotImplemented
 
-        return self.path == other.path and self.date_delivered == other.date_delivered
+        return self.path == other.path
 
     def read_delivery_date(self):
         ctl_path = self._find_ctl_from_dat()
