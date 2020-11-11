@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 from pathlib import Path
 
-from gp2gp.mesh import MeshFile
+from gp2gp.mesh.file import MeshFile
 from gp2gp.registry import ProcessedFileRegistry
 
 A_PATH = Path("IN/a_file.dat")

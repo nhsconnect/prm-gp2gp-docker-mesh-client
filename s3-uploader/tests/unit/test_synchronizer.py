@@ -2,7 +2,7 @@ from datetime import datetime
 from pathlib import Path
 
 from gp2gp.synchronizer import MeshToS3Synchronizer
-from gp2gp.mesh import MeshFile
+from gp2gp.mesh.file import MeshFile
 from unittest.mock import MagicMock, call
 
 A_DATE = datetime(2020, 10, 25)
@@ -51,11 +51,11 @@ class MockFileRegistry:
     def __init__(self):
         self.registry = set()
 
-    def mark_processed(self, filename):
-        self.registry.add(filename)
+    def mark_processed(self, mesh_file):
+        self.registry.add(mesh_file.path)
 
-    def is_already_processed(self, filename):
-        return filename in self.registry
+    def is_already_processed(self, mesh_file):
+        return mesh_file.path in self.registry
 
 
 def mock_registry(already_processed):

@@ -1,7 +1,8 @@
-from dataclasses import dataclass
 from pathlib import Path
 from defusedxml.ElementTree import parse
 from datetime import datetime
+
+from gp2gp.mesh.file import MeshFile
 
 
 class MeshInboxScanner:
@@ -31,9 +32,3 @@ class MeshInboxScanner:
 
     def _parse_date_from_string(self, date_string):
         return datetime.strptime(date_string, "%Y%m%d%H%M%S")
-
-
-@dataclass(frozen=True)
-class MeshFile:
-    path: Path
-    date_delivered: datetime

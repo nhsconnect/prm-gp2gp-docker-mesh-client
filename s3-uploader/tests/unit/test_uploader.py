@@ -3,7 +3,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from gp2gp.uploader import MeshS3Uploader
-from gp2gp.mesh import MeshFile
+from gp2gp.mesh.file import MeshFile
 
 
 def test_upload():

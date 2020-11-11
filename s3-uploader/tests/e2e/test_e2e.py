@@ -8,7 +8,7 @@ from subprocess import Popen, PIPE
 
 import boto3
 from botocore.config import Config
-from gp2gp.mesh import MeshFile
+from gp2gp.mesh.file import MeshFile
 from gp2gp.registry import ProcessedFileRegistry
 
 

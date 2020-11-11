@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 import boto3
 from botocore.config import Config
 
-from gp2gp.mesh import MeshInboxScanner
+from gp2gp.mesh.inbox import MeshInboxScanner
 from gp2gp.registry import ProcessedFileRegistry
 from gp2gp.uploader import MeshS3Uploader
 
