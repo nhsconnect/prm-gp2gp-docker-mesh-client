@@ -1,11 +1,13 @@
 import sqlite3
 import sys
+import logging
 from argparse import ArgumentParser
 
 import boto3
 from botocore.config import Config
 
 from gp2gp.mesh.inbox import MeshInboxScanner
+from gp2gp.mesh.file import MeshFileException
 from gp2gp.registry import ProcessedFileRegistry
 from gp2gp.uploader import MeshS3Uploader
 
@@ -21,8 +23,11 @@ class MeshToS3Synchronizer:
 
         for file in mesh_files:
             if not self._file_registry.is_already_processed(file):
-                self._file_uploader.upload(file)
-                self._file_registry.mark_processed(file)
+                try:
+                    self._file_uploader.upload(file)
+                    self._file_registry.mark_processed(file)
+                except MeshFileException:
+                    logging.error(f"Error uploading file: {file.path}", exc_info=True)
 
 
 def parse_arguments(argument_list):
