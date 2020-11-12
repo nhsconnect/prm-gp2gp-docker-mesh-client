@@ -16,7 +16,7 @@ class MeshToS3Synchronizer:
         self._file_registry = file_registry
         self._file_uploader = file_uploader
 
-    def run(self, directory_path, s3_bucket):
+    def run(self, directory_path):
         mesh_files = self._mesh_inbox_scanner.scan(directory_path)
 
         for file in mesh_files:
@@ -51,4 +51,4 @@ def main():
 
     mesh_synchronizer = MeshToS3Synchronizer(mesh_inbox_scanner, file_registry, file_uploader)
 
-    mesh_synchronizer.run(args.mesh_inbox, args.s3_bucket)
+    mesh_synchronizer.run(args.mesh_inbox)
