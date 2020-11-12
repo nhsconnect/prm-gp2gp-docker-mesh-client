@@ -16,8 +16,8 @@ class MeshToS3Synchronizer:
         self._file_registry = file_registry
         self._file_uploader = file_uploader
 
-    def run(self, directory_path):
-        mesh_files = self._mesh_inbox_scanner.scan(directory_path)
+    def run(self):
+        mesh_files = self._mesh_inbox_scanner.scan()
 
         for file in mesh_files:
             if not self._file_registry.is_already_processed(file):
@@ -45,10 +45,10 @@ def main():
         config=Config(signature_version="s3v4"),
     )
 
-    mesh_inbox_scanner = MeshInboxScanner()
+    mesh_inbox_scanner = MeshInboxScanner(args.mesh_inbox)
     file_registry = ProcessedFileRegistry(sqlite_conn)
     file_uploader = MeshS3Uploader(s3, args.s3_bucket)
 
     mesh_synchronizer = MeshToS3Synchronizer(mesh_inbox_scanner, file_registry, file_uploader)
 
-    mesh_synchronizer.run(args.mesh_inbox)
+    mesh_synchronizer.run()

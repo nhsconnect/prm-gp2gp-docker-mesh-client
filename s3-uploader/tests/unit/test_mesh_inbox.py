@@ -11,9 +11,9 @@ def test_finds_dat_file_in_directory(fs):
 
     expected = [MeshFile(dat_file_path)]
 
-    scanner = MeshInboxScanner()
+    scanner = MeshInboxScanner("/IN")
 
-    result = list(scanner.scan("/IN"))
+    result = list(scanner.scan())
 
     assert result == expected
 
@@ -25,9 +25,9 @@ def test_ignores_non_dat_files_in_directory(fs):
 
     expected = []
 
-    scanner = MeshInboxScanner()
+    scanner = MeshInboxScanner("/IN")
 
-    result = list(scanner.scan("/IN"))
+    result = list(scanner.scan())
 
     assert result == expected
 
@@ -41,8 +41,8 @@ def test_finds_multiple_dat_files_in_directory(fs):
 
     expected = [MeshFile(dat_file_path_one), MeshFile(dat_file_path_two)]
 
-    scanner = MeshInboxScanner()
+    scanner = MeshInboxScanner("/IN")
 
-    result = list(scanner.scan("/IN"))
+    result = list(scanner.scan())
 
     assert result == expected

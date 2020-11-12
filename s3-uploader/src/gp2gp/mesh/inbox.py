@@ -4,10 +4,11 @@ from gp2gp.mesh.file import MeshFile
 
 
 class MeshInboxScanner:
-    def scan(self, directory):
-        directory_path = Path(directory)
+    def __init__(self, directory):
+        self._directory = Path(directory)
 
-        file_paths = directory_path.glob("*.dat")
+    def scan(self):
+        file_paths = self._directory.glob("*.dat")
 
         for file_path in file_paths:
             yield MeshFile(path=file_path)

@@ -17,9 +17,8 @@ def test_uploads_file():
 
     uploader = MeshToS3Synchronizer(mock_mesh_inbox_scanner, mock_file_registry, mock_file_uploader)
 
-    uploader.run("fake/path")
+    uploader.run()
 
-    mock_mesh_inbox_scanner.scan.assert_called_once_with("fake/path")
     mock_file_uploader.upload.assert_called_once_with(mock_mesh_file)
 
 
@@ -36,9 +35,7 @@ def test_uploads_multiple_files():
 
     uploader = MeshToS3Synchronizer(mock_mesh_inbox_scanner, mock_file_registry, mock_file_uploader)
 
-    uploader.run("fake/path")
-
-    mock_mesh_inbox_scanner.scan.assert_called_once_with("fake/path")
+    uploader.run()
 
     calls = [call(mock_mesh_file), call(mock_second_mesh_file)]
     mock_file_uploader.upload.assert_has_calls(calls)
@@ -77,9 +74,7 @@ def test_only_uploads_new_files():
 
     uploader = MeshToS3Synchronizer(mock_mesh_inbox_scanner, mock_file_registry, mock_file_uploader)
 
-    uploader.run("fake/path")
-
-    mock_mesh_inbox_scanner.scan.assert_called_once_with("fake/path")
+    uploader.run()
 
     mock_file_uploader.upload.assert_called_once_with(MeshFile(path=Path("path/to/newfile.dat")))
 
@@ -96,7 +91,7 @@ def test_uploads_file_only_once():
 
     uploader = MeshToS3Synchronizer(mock_mesh_inbox_scanner, mock_file_registry, mock_file_uploader)
 
-    uploader.run("fake/path")
-    uploader.run("fake/path")
+    uploader.run()
+    uploader.run()
 
     mock_file_uploader.upload.assert_called_once_with(mock_mesh_file)
