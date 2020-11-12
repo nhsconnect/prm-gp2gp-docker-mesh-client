@@ -15,9 +15,8 @@ def test_reads_delivery_date(fs):
         contents=(
             "<DTSControl>"
             "<StatusRecord>"
-            "<DateTime>"
-            "20201025030139"
-            "</DateTime>"
+            "<DateTime>20201025030139</DateTime>"
+            "<Event>TRANSFER</Event>"
             "</StatusRecord>"
             "</DTSControl>"
         ),
@@ -31,7 +30,7 @@ def test_reads_delivery_date(fs):
     assert result == expected_date
 
 
-def test_throws_exception_given_invalid_ctrl_file(fs):
+def test_throws_mesh_file_exception_given_invalid_ctrl_file(fs):
     dat_file_path = Path("/IN/20201025030139_abc.dat")
     ctl_file_path = Path("/IN/20201025030139_abc.ctl")
     fs.create_dir("/IN")
@@ -47,7 +46,7 @@ def test_throws_exception_given_invalid_ctrl_file(fs):
         mesh_file.read_delivery_date()
 
 
-def test_throws_exception_given_non_xml_ctrl_file(fs):
+def test_throws_mesh_file_exception_given_non_xml_ctrl_file(fs):
     dat_file_path = Path("/IN/20201025030139_abc.dat")
     ctl_file_path = Path("/IN/20201025030139_abc.ctl")
     fs.create_dir("/IN")
@@ -55,6 +54,29 @@ def test_throws_exception_given_non_xml_ctrl_file(fs):
     fs.create_file(
         ctl_file_path,
         contents="This is not xml",
+    )
+
+    mesh_file = MeshFile(path=dat_file_path)
+
+    with raises(MeshFileException):
+        mesh_file.read_delivery_date()
+
+
+def test_throws_mesh_file_exception_given_unexpected_event(fs):
+    dat_file_path = Path("/IN/20201025030139_abc.dat")
+    ctl_file_path = Path("/IN/20201025030139_abc.ctl")
+    fs.create_dir("/IN")
+    fs.create_file(dat_file_path, contents="I, am, data")
+    fs.create_file(
+        ctl_file_path,
+        contents=(
+            "<DTSControl>"
+            "<StatusRecord>"
+            "<DateTime>20201025030139</DateTime>"
+            "<Event>COLLECT</Event>"
+            "</StatusRecord>"
+            "</DTSControl>"
+        ),
     )
 
     mesh_file = MeshFile(path=dat_file_path)
