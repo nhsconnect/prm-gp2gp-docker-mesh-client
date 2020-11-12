@@ -1,4 +1,4 @@
-from defusedxml.ElementTree import parse
+from defusedxml.ElementTree import parse, ParseError
 from datetime import datetime
 
 
@@ -23,9 +23,18 @@ class MeshFile:
         return self.path.parent / f"{file_name}.ctl"
 
     def _parse_value_from_xml(self, xml_path):
-        root = parse(xml_path).getroot()
-        raw_date = root.find("StatusRecord").find("DateTime").text
-        return raw_date
+        try:
+            root = parse(xml_path).getroot()
+            raw_date = root.find("StatusRecord").find("DateTime").text
+            return raw_date
+        except ParseError as e:
+            raise MeshFileException(f"Invalid XML in CTRL file, {xml_path}") from e
+        except AttributeError as e:
+            raise MeshFileException(f"Unexpected XML structure in CTRL file, {xml_path}") from e
 
     def _parse_date_from_string(self, date_string):
         return datetime.strptime(date_string, "%Y%m%d%H%M%S")
+
+
+class MeshFileException(Exception):
+    pass
