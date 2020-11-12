@@ -50,6 +50,8 @@ def _write_test_files(test_files):
                 "<DateTime>"
                 f"{timestamp}"
                 "</DateTime>"
+                "<Event>TRANSFER</Event>"
+                "<Status>SUCCESS</Status>"
                 "</StatusRecord>"
                 "</DTSControl>"
             )

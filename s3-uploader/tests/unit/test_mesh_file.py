@@ -3,10 +3,10 @@ from pathlib import Path
 
 from gp2gp.mesh.file import (
     MeshFile,
-    UnexpectedEvent,
-    UnsuccessfulStatus,
-    InvalidXML,
-    UnexpectedXMLStructure,
+    UnexpectedControlEvent,
+    UnsuccessfulControlStatus,
+    InvalidControlFileXML,
+    UnexpectedControlFileStructure,
 )
 from pytest import raises
 
@@ -49,7 +49,7 @@ def test_throws_mesh_file_exception_given_invalid_ctrl_file(fs):
 
     mesh_file = MeshFile(path=dat_file_path)
 
-    with raises(UnexpectedXMLStructure):
+    with raises(UnexpectedControlFileStructure):
         mesh_file.read_delivery_date()
 
 
@@ -65,11 +65,11 @@ def test_throws_mesh_file_exception_given_non_xml_ctrl_file(fs):
 
     mesh_file = MeshFile(path=dat_file_path)
 
-    with raises(InvalidXML):
+    with raises(InvalidControlFileXML):
         mesh_file.read_delivery_date()
 
 
-def test_throws_mesh_file_exception_given_unexpected_event(fs):
+def test_throws_mesh_file_exception_given_unexpected_event_type(fs):
     dat_file_path = Path("/IN/20201025030139_abc.dat")
     ctl_file_path = Path("/IN/20201025030139_abc.ctl")
     fs.create_dir("/IN")
@@ -89,11 +89,11 @@ def test_throws_mesh_file_exception_given_unexpected_event(fs):
 
     mesh_file = MeshFile(path=dat_file_path)
 
-    with raises(UnexpectedEvent):
+    with raises(UnexpectedControlEvent):
         mesh_file.read_delivery_date()
 
 
-def test_throws_mesh_file_exception_given_unsuccessful_status(fs):
+def test_throws_mesh_file_exception_given_unsuccessful_event_status(fs):
     dat_file_path = Path("/IN/20201025030139_abc.dat")
     ctl_file_path = Path("/IN/20201025030139_abc.ctl")
     fs.create_dir("/IN")
@@ -113,5 +113,5 @@ def test_throws_mesh_file_exception_given_unsuccessful_status(fs):
 
     mesh_file = MeshFile(path=dat_file_path)
 
-    with raises(UnsuccessfulStatus):
+    with raises(UnsuccessfulControlStatus):
         mesh_file.read_delivery_date()
