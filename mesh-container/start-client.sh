@@ -2,6 +2,11 @@
 
 set -e
 
+if [[ -z "$MESH_URL" ]]; then
+    echo "Error: MESH_URL environment variable is not set, exiting.."
+    exit 1
+fi
+
 if [[ -z "$KEYSTORE_PASSWORD" ]]; then
     echo "Error: KEYSTORE_PASSWORD environment variable is not set, exiting.."
     exit 1
